@@ -1,0 +1,72 @@
+services:
+# Zookeeper
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.8.0
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    networks:
+      - custom-network
+
+# Kafka
+  kafka:
+    image: confluentinc/cp-kafka:7.8.0
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - custom-network
+
+# Postgres DB
+  postgres-db:
+    image: postgres
+    container_name: postgres
+    networks:
+      - custom-network
+    ports:
+      - "5432:5432"
+    volumes:
+      - "//e/Work/data:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata
+
+# MongoDB
+  mongo-db:
+    image: mongo
+    container_name: mongo
+    networks:
+      - custom-network
+    ports:
+      - "27017:27017"
+    volumes:
+      - "//e/Mongo/data:/data/db"
+
+# Sonar Qube
+  sonarqube:
+    image: sonarqube:lts-community
+    container_name: sonarqube
+    networks:
+      - custom-network
+    ports:
+      - "9000:9000"
+    volumes:
+      - "//e/Sonar/data://opt/sonarqube/data"
+      - "//e/Sonar/logs://opt/sonarqube/logs"
+      - "//e/Sonar/extensions://opt/sonarqube/extensions"
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+      
+networks:
+  custom-network:
+    driver: bridge

@@ -1,0 +1,58 @@
+
+# Kafka Broker
+  kafka-broker:
+    image: apache/kafka:latest
+    container_name: broker
+    networks:
+      - custom-network
+    ports:
+      - "9092:9092"  # External Kafka access
+      - "9093:9093"  # Internal controller communication
+      - "9094:9094"  # Internal broker communication
+    environment:
+      - KAFKA_PROCESS_ROLES=broker,controller
+      - KAFKA_NODE_ID=1
+      - KAFKA_CONTROLLER_QUORUM_VOTERS=1@broker:9093
+      - KAFKA_LISTENERS=PLAINTEXT://localhost:9092,PLAINTEXT_DOCKER://broker:9094,CONTROLLER://broker:9093
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_DOCKER:PLAINTEXT,CONTROLLER:PLAINTEXT
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092,PLAINTEXT_DOCKER://broker:9094
+      - KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_LOG_DIRS=/tmp/kraft-combined-logs
+      - KAFKA_CLUSTER_ID=5L6g3nShT-eMCtK--X86sw
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+
+# Kafka UI (AKHQ)
+  akhq:
+    image: tchiotludo/akhq
+    container_name: akhq
+    networks:
+      - custom-network
+    environment:
+      AKHQ_CONFIGURATION: |
+        akhq:
+          connections:
+            docker-kafka-server:
+              properties:
+                bootstrap.servers: "broker:9094"
+    ports:
+      - "8083:8080"
+    depends_on:
+      - kafka-broker
+
+# Postgres DB
+  postgres-db:
+    image: postgres
+    container_name: postgres
+    networks:
+      - custom-network
+    ports:
+      - "5432:5432"
+    volumes:
+      - "//e/Work/data:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      
+networks:
+  custom-network:
+    driver: bridge

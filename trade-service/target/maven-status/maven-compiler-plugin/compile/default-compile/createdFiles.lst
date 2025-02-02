@@ -1,0 +1,17 @@
+com\db\trade\trade_service\repository\TradeRepository.class
+com\db\trade\trade_service\kafka\KafkaConfig.class
+com\db\trade\trade_service\utils\ObjectMapper.class
+com\db\trade\trade_service\model\InputRequest$InputRequestBuilder.class
+com\db\trade\trade_service\kafka\TradeConsumer.class
+com\db\trade\trade_service\repository\InputRequestRepository.class
+com\db\trade\trade_service\service\TradeService.class
+com\db\trade\trade_service\model\Trade.class
+com\db\trade\trade_service\TradeServiceApplication.class
+com\db\trade\trade_service\kafka\TradeProducer.class
+com\db\trade\trade_service\model\TradeId.class
+com\db\trade\trade_service\model\TradeId$TradeIdBuilder.class
+com\db\trade\trade_service\model\InputRequest.class
+com\db\trade\trade_service\model\Trade$TradeBuilder.class
+com\db\trade\trade_service\model\TradeRequest.class
+com\db\trade\trade_service\controller\TradeController.class
+com\db\trade\trade_service\kafka\KafkaTopicCreator.class
