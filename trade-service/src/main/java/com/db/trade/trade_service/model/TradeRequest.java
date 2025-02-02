@@ -19,6 +19,8 @@ import lombok.Setter;
 @Setter
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Schema(description = "Trade details")
 public class TradeRequest implements Serializable {

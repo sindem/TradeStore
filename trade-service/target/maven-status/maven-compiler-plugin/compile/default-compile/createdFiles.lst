@@ -9,7 +9,7 @@ com\db\trade\trade_service\model\Trade.class
 com\db\trade\trade_service\TradeServiceApplication.class
 com\db\trade\trade_service\kafka\TradeProducer.class
 com\db\trade\trade_service\model\TradeId.class
-com\db\trade\trade_service\model\TradeId$TradeIdBuilder.class
+com\db\trade\trade_service\model\TradeRequest$TradeRequestBuilder.class
 com\db\trade\trade_service\model\InputRequest.class
 com\db\trade\trade_service\model\Trade$TradeBuilder.class
 com\db\trade\trade_service\model\TradeRequest.class
